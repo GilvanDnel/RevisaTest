@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Bolso: Qualidade de Software & Python</title>
+    <!-- Carregamento do Tailwind CSS para styling e responsividade -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Configurações de cores para tema escuro e memorização */
+        :root {
+            --color-bg-dark: #0A192F; /* Deep Navy Blue */
+            --color-card-dark: #172A45; /* Slightly lighter Navy */
+            --color-accent: #64FFDA; /* Bright Cyan/Teal for contrast/memorization */
+            --color-text-light: #CCD6F6; /* Light gray-blue for main text */
+            --color-correct: #38A169; /* Green for success */
+            --color-incorrect: #E53E3E; /* Red for error */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg-dark);
+        }
+
+        /* Estilo para as opções de resposta */
+        .option-button {
+            transition: all 0.2s ease-in-out;
+            @apply w-full text-left p-3 my-2 rounded-lg border-2 border-transparent text-sm md:text-base;
+            background-color: var(--color-card-dark);
+            color: var(--color-text-light);
+        }
+
+        .option-button:hover:not([disabled]) {
+            border-color: var(--color-accent);
+            cursor: pointer;
+        }
+
+        .selected-correct {
+            background-color: var(--color-correct);
+            border-color: var(--color-correct);
+            color: var(--color-bg-dark); /* Dark text on bright color */
+            font-weight: bold;
+        }
+
+        .selected-incorrect {
+            background-color: var(--color-incorrect);
+            border-color: var(--color-incorrect);
+            color: white;
+            font-weight: bold;
+        }
+
+        .correct-answer {
+            background-color: var(--color-correct);
+            border-color: var(--color-correct);
+            opacity: 0.7;
+        }
+
+        /* Estilo para o Modal de Feedback customizado */
+        #feedback-modal {
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+        }
+
+        .modal-content {
+            background-color: var(--color-card-dark);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border-top: 5px solid var(--color-accent);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Modal de Feedback Customizado (Substituto do Alert) -->
+    <div id="feedback-modal" class="fixed inset-0 hidden items-center justify-center p-4">
+        <div class="modal-content w-full max-w-lg p-6 rounded-xl transform transition-all duration-300">
+            <h3 id="modal-title" class="text-3xl font-extrabold mb-4" style="color: var(--color-accent);"></h3>
+            <p id="modal-message" class="text-lg text-white mb-6"></p>
+            <p id="modal-details" class="text-sm italic" style="color: var(--color-text-light);"></p>
+            <button onclick="closeModal()" class="mt-4 w-full p-3 rounded-lg font-bold" style="background-color: var(--color-accent); color: var(--color-bg-dark);">Continuar</button>
+        </div>
+    </div>
+
+    <!-- Cabeçalho -->
+    <header class="p-6 md:p-10 shadow-lg" style="background-color: var(--color-card-dark);">
+        <h1 class="text-3xl md:text-4xl font-extrabold" style="color: var(--color-accent);">
+            Manual de Bolso: Engenharia de Software e Python
+        </h1>
+        <p class="text-lg mt-2" style="color: var(--color-text-light);">21 Questões para Revisão de Fundamentos e Qualidade.</p>
+    </header>
+
+    <!-- Container Principal do Quiz -->
+    <main class="max-w-6xl mx-auto p-4 md:p-8">
+        <div id="quiz-container" class="space-y-12">
+            <!-- Questões serão injetadas aqui -->
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="p-6 mt-12 text-center text-sm" style="color: var(--color-text-light); background-color: var(--color-card-dark);">
+        <p class="mb-2">A Qualidade é uma jornada, não um destino. Mantenha o foco!</p>
+        <p>Desenvolvido por **[Seu Nome/Developer Sênior]** | Especialista em Testes e Psicopedagogia.</p>
+    </footer>
+
+    <script>
+        // Dados das Questões
+        const quizData = [
+            {
+                id: 1,
+                topic: "Fundamentos de Qualidade",
+                hint: "A mudança de paradigma na qualidade de software.",
+                question: "Qual abordagem de qualidade foca em 'construir a qualidade desde o início', integrando-a em todo o ciclo, e é característica da engenharia de software moderna?",
+                type: "multiple-choice",
+                options: [
+                    "A) Abordagem Tradicional (Foco em Detecção)",
+                    "B) Abordagem Pós-produção (Foco em Manutenção)",
+                    "C) Abordagem Contemporânea (Foco em Prevenção)",
+                    "D) Abordagem Reativa (Foco em Correção)"
+                ],
+                correctAnswer: "C",
+                feedback: "A Abordagem **Contemporânea** (ou Proativa) enfatiza a prevenção de defeitos e a responsabilidade compartilhada, movendo a qualidade para o início do processo (**Shift-Left**).",
+                proverb: "Nana korobi ya oki: Cair sete vezes, levantar-se oito."
+            },
+            {
+                id: 2,
+                topic: "Padrões de Qualidade",
+                hint: "O modelo que define as características de qualidade do produto (Funcionalidade, Confiabilidade, Usabilidade, etc.).",
+                question: "Qual padrão define um modelo de qualidade de produto com características como confiabilidade, usabilidade, manutenibilidade e portabilidade?",
+                type: "multiple-choice",
+                options: [
+                    "A) CMMI (Capability Maturity Model Integration)",
+                    "B) IEEE 730 (Garantia de Qualidade)",
+                    "C) MPS.BR (Melhoria de Processo Brasileiro)",
+                    "D) ISO/IEC 25010 (Modelo de Qualidade de Produto)"
+                ],
+                correctAnswer: "D",
+                feedback: "A **ISO/IEC 25010** é o padrão que define o modelo de qualidade de produto e em uso, detalhando características essenciais do software.",
+                proverb: "Ichi-go ichi-e: Valorize o momento, pois ele não voltará."
+            },
+            {
+                id: 3,
+                topic: "Tipos de Defeitos",
+                hint: "Defeitos que surgem antes mesmo de uma linha de código ser escrita.",
+                question: "Um requisito que exige que 'O sistema deve responder rapidamente às solicitações do usuário' é um exemplo de qual tipo comum de defeito?",
+                type: "multiple-choice",
+                options: [
+                    "A) Defeito de Código (Off-by-one)",
+                    "B) Defeito de Design (Alto Acoplamento)",
+                    "C) Defeito de Interface (Inconsistência Visual)",
+                    "D) Defeito de Requisito (Ambiguidade)"
+                ],
+                correctAnswer: "D",
+                feedback: "Requisitos como 'responder rapidamente' são ambíguos. Defeitos de **Requisitos** (ambiguidade, incompletude) são os mais custosos de corrigir tardiamente.",
+                proverb: "Kaizen: A busca pela melhoria contínua e gradual."
+            },
+            {
+                id: 4,
+                topic: "Requisitos de Qualidade",
+                hint: "A capacidade de um componente ser usado em diferentes contextos.",
+                question: "Qual requisito de qualidade é exemplificado por 'Uma biblioteca de validação de formulários que pode ser facilmente integrada em diferentes projetos web sem modificações'?",
+                type: "multiple-choice",
+                options: [
+                    "A) Robustez",
+                    "B) Segurança",
+                    "C) Reusabilidade",
+                    "D) Portabilidade"
+                ],
+                correctAnswer: "C",
+                feedback: "A **Reusabilidade** foca na capacidade de um componente de software ser utilizado em diferentes aplicações ou contextos.",
+                proverb: "Shoshin: Tenha sempre a mente de principiante."
+            },
+            {
+                id: 5,
+                topic: "Testes Estáticos e Dinâmicos",
+                hint: "Um não executa o código; o outro sim.",
+                question: "A Inspeção e a Análise Estática de Código são formas de Teste Estático, enquanto o Teste Unitário e o Teste de Aceitação são formas de Teste Dinâmico.",
+                type: "assertion-reason",
+                assertion1: "O Teste Estático avalia artefatos sem executar o código.",
+                assertion2: "O Teste Dinâmico envolve a execução do código.",
+                correctAnswer: "B",
+                feedback: "Ambas as asserções são verdadeiras, mas não há relação de justificativa direta. Testes Estáticos (inspeção) e Dinâmicos (unitário) são complementares.",
+                proverb: "Seikou no ura niwa kurou ga aru: Atrás do sucesso, há esforço."
+            },
+            {
+                id: 6,
+                topic: "Procedimento de Revisão",
+                hint: "O guardião do processo de revisão.",
+                question: "No Procedimento de Revisão de Software, o participante responsável por conduzir a reunião, garantir o processo e a contribuição de todos é o **Registrador**.",
+                type: "assertion-reason",
+                assertion1: "O Moderador é o responsável por documentar os problemas encontrados, decisões tomadas e ações necessárias durante a Reunião de Revisão.",
+                assertion2: "O Moderador é o responsável por conduzir a reunião e garantir que o processo de revisão seja seguido corretamente, mas não é o Registrador.",
+                correctAnswer: "D",
+                feedback: "A primeira asserção é falsa. O responsável por documentar é o **Registrador**. A segunda asserção é verdadeira. O **Moderador** conduz a reunião.",
+                proverb: "Gambaru: Fazer o seu melhor com perseverança."
+            },
+            {
+                id: 7,
+                topic: "Métricas de Qualidade",
+                hint: "Uma métrica que mede a complexidade da lógica de um método.",
+                question: "O que a Métrica de Complexidade de McCabe mede?",
+                type: "multiple-choice",
+                options: [
+                    "A) O número de linhas de código (LOC).",
+                    "B) O grau de acoplamento entre módulos.",
+                    "C) A complexidade da lógica de controle do código-fonte.",
+                    "D) O tempo médio para correção de um defeito."
+                ],
+                correctAnswer: "C",
+                feedback: "A **Complexidade Ciclomática de McCabe** mede a complexidade de controle do código, geralmente contando o número de caminhos de execução independentes.",
+                proverb: "Omoiyari: Consideração profunda pelos outros."
+            },
+            {
+                id: 8,
+                topic: "Ciclo de Vida do Teste",
+                hint: "O conceito que busca testar o mais cedo possível.",
+                question: "Qual conceito moderno propõe mover as atividades de teste para o início do ciclo de desenvolvimento, antes da implementação, para reduzir custos?",
+                type: "multiple-choice",
+                options: [
+                    "A) Shift-Right Testing",
+                    "B) Testes de Aceitação",
+                    "C) Shift-Left Testing",
+                    "D) Teste Pós-Implantação"
+                ],
+                correctAnswer: "C",
+                feedback: "O conceito de **Shift-Left Testing** é a abordagem moderna que preconiza a antecipação dos testes para a fase de requisitos e design, onde os bugs são mais baratos de corrigir.",
+                proverb: "Kodawari: O compromisso inflexível com a perfeição."
+            },
+            {
+                id: 9,
+                topic: "Pirâmide de Testes",
+                hint: "O nível de testes que deve ser o mais volumoso e rápido.",
+                question: "Na Pirâmide de Testes, qual nível deve ser o mais abundante (cerca de 70% do volume total) e é focado em pequenas unidades de código?",
+                type: "multiple-choice",
+                options: [
+                    "A) Testes de UI/E2E (End-to-End)",
+                    "B) Testes de Sistema",
+                    "C) Testes de Integração (Service)",
+                    "D) Testes Unitários"
+                ],
+                correctAnswer: "D",
+                feedback: "A base da pirâmide é formada pelos **Testes Unitários**, que são mais rápidos, mais baratos e focados em isolar e verificar pequenas unidades de código.",
+                proverb: "Wabi-sabi: Encontrar a beleza na imperfeição e aceitar a transitoriedade."
+            },
+            {
+                id: 10,
+                topic: "Tipos de Testes",
+                hint: "Testes que garantem que novas alterações não quebraram funcionalidades existentes.",
+                question: "Por que os Testes de Regressão são essenciais em um pipeline de CI/CD?",
+                type: "multiple-choice",
+                options: [
+                    "A) Porque eles verificam se o software atende aos requisitos do negócio (Aceitação).",
+                    "B) Porque eles garantem que o software funciona sob alta carga (Carga/Estresse).",
+                    "C) Porque eles verificam se novas alterações não introduziram defeitos em funcionalidades previamente estáveis.",
+                    "D) Porque eles avaliam apenas a usabilidade e a experiência do usuário (UX)."
+                ],
+                correctAnswer: "C",
+                feedback: "Os **Testes de Regressão** previnem que novas modificações no código (correções ou novas *features*) causem falhas em partes já existentes e funcionando do sistema.",
+                proverb: "Gaman: Suportar o que é insuportável com paciência e dignidade."
+            },
+            {
+                id: 11,
+                topic: "Pirâmide Invertida",
+                hint: "O risco de focar demais no topo da pirâmide.",
+                question: "Uma 'Pirâmide de Testes Invertida' (com mais testes E2E e menos unitários) resulta em feedback lento, alto custo de manutenção e testes frágeis.",
+                type: "assertion-reason",
+                assertion1: "A Pirâmide Invertida é um modelo estratégico recomendado, pois foca na simulação do usuário final, o que é o mais importante para o negócio.",
+                assertion2: "A Pirâmide Invertida é problemática porque testes E2E/UI são lentos, caros e frágeis, resultando em ciclos de *feedback* ineficientes.",
+                correctAnswer: "D",
+                feedback: "A primeira asserção é falsa, a Pirâmide Invertida é um **antimodelo**. A segunda é verdadeira, resumindo os problemas da inversão.",
+                proverb: "Kintsugi: Reparar quebras com ouro, vendo o dano como parte da história."
+            },
+            {
+                id: 12,
+                topic: "Testes Automatizados (Ferramentas)",
+                hint: "Ferramenta moderna focada em testes end-to-end web, escrita em JavaScript.",
+                question: "Para a automação de Testes End-to-End (E2E) em aplicações web modernas, qual ferramenta é frequentemente citada como alternativa ao Selenium, oferecendo uma experiência focada em JavaScript?",
+                type: "multiple-choice",
+                options: [
+                    "A) JUnit",
+                    "B) PyTest",
+                    "C) Postman",
+                    "D) Cypress"
+                ],
+                correctAnswer: "D",
+                feedback: "**Cypress** é uma ferramenta de automação moderna, focada em E2E para a web e muito popular no ecossistema JavaScript. JUnit e PyTest são para Unitários, e Postman é para APIs.",
+                proverb: "Kizuna: Laços inquebráveis entre pessoas."
+            },
+            {
+                id: 13,
+                topic: "Testes Automatizados (Conceito)",
+                hint: "A principal vantagem da automação.",
+                question: "Teste Automatizado é o processo de utilizar ferramentas e scripts para executar testes em um software sem intervenção manual.",
+                type: "assertion-reason",
+                assertion1: "A principal desvantagem do teste automatizado é que ele é mais lento e menos repetível que o teste manual, aumentando a fadiga do QA.",
+                assertion2: "A automação é essencial para a **regressão rápida** e a **consistência** das verificações, permitindo que centenas de testes sejam executados em minutos.",
+                correctAnswer: "D",
+                feedback: "A primeira asserção é falsa, pois testes automatizados são **mais rápidos** e **mais repetíveis**. A segunda asserção é verdadeira, destacando os benefícios centrais da automação.",
+                proverb: "Bushido: O caminho do guerreiro, ética de trabalho e autodisciplina."
+            },
+            {
+                id: 14,
+                topic: "Boas Práticas de Automação",
+                hint: "Padrão de design para organizar testes de UI.",
+                question: "O **Page Object Model (POM)** é um padrão de design que auxilia na criação de testes de UI de fácil manutenção, encapsulando elementos da página em classes.",
+                type: "assertion-reason",
+                assertion1: "Com o Page Object Model, quando a interface do usuário muda, apenas a classe do *Page Object* precisa ser atualizada, e não todos os testes que a utilizam.",
+                assertion2: "O POM força o desenvolvedor a escrever testes que interagem diretamente com os seletores HTML, tornando-os mais frágeis a pequenas alterações visuais.",
+                correctAnswer: "C",
+                feedback: "A primeira asserção é verdadeira. O POM isola a lógica de interação da lógica de teste. A segunda é falsa; o POM **impede** a interação direta nos testes, promovendo a manutenção.",
+                proverb: "Shikata ga nai: Não há o que fazer. (Aceitar o que não pode ser mudado e focar no que pode)."
+            },
+            {
+                id: 15,
+                topic: "Qualidade de Produto",
+                hint: "Qual fator se refere à facilidade de correções e adaptações?",
+                question: "No contexto dos Fatores de Qualidade do Produto, o que a **Manutenibilidade** representa?",
+                type: "multiple-choice",
+                options: [
+                    "A) A consistência dos resultados e a ausência de falhas (Confiabilidade).",
+                    "B) O uso otimizado de recursos (Eficiência).",
+                    "C) A facilidade com que o software pode ser corrigido, adaptado ou evoluído.",
+                    "D) A facilidade de aprendizado e uso (Usabilidade)."
+                ],
+                correctAnswer: "C",
+                feedback: "A **Manutenibilidade** é a facilidade com que o software pode ser corrigido (debugado), adaptado a novas necessidades (flexibilidade) ou aprimorado.",
+                proverb: "Nihon-go de ganbatte kudasai: Faça o seu melhor com o idioma japonês (motivação linguística!)."
+            },
+            {
+                id: 16,
+                topic: "Python: Variáveis e Tipos",
+                hint: "O tipo de dado que define a maioridade.",
+                question: "Qual tipo de dado é mais adequado em Python para armazenar o valor lógico de uma condição, como 'aprovado = True'?",
+                type: "multiple-choice",
+                options: [
+                    "A) `str` (String)",
+                    "B) `int` (Inteiro)",
+                    "C) `float` (Decimal)",
+                    "D) `bool` (Booleano)"
+                ],
+                correctAnswer: "D",
+                feedback: "O 
