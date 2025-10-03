@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Bolso: Qualidade e Testes de Software</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg-color: #1e1e1e;
+            --text-color: #e0e0e0;
+            --primary-color: #6a0dad;
+            --secondary-color: #ffc107;
+            --accent-color: #00bcd4;
+            --success-color: #4caf50;
+            --error-color: #f44336;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .question-card {
+            background-color: var(--card-bg-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .question-card h2 {
+            color: var(--accent-color);
+            margin-top: 0;
+            border-bottom: 1px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        .card-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hint-section, .question-section {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .hint-section {
+            background-color: rgba(106, 13, 173, 0.2);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .hint-section h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+
+        .question-section {
+            background-color: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .question-section p {
+            font-weight: bold;
+        }
+
+        .options label {
+            display: block;
+            background-color: #333;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .options label:hover {
+            background-color: #555;
+        }
+
+        .options input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback.success {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+            display: block;
+        }
+
+        .feedback.error {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: var(--error-color);
+            border: 1px solid var(--error-color);
+            display: block;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #5d02a9;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--card-bg-color);
+            color: #888;
+        }
+
+        @media (min-width: 768px) {
+            .card-content {
+                flex-direction: row;
+            }
+
+            .hint-section, .question-section {
+                flex: 1;
+                margin-bottom: 0;
+            }
+
+            .hint-section {
+                margin-right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Manual de Bolso: Qualidade e Testes de Software</h1>
+    <p>Revisão de conceitos essenciais para o desenvolvedor moderno.</p>
+</header>
+
+<div class="container">
+
+    <div class="question-card">
+        <h2>Questão 1</h2>
+        <div class="card-content">
+            <div class="hint-section">
+                <h3>Dica</h3>
+                <p>O teste de uma função isolada, como um cálculo de juros, é um exemplo clássico. Pense na menor parte do código verificável.</p>
+            </div>
+            <div class="question-section">
+                <p>Qual tipo de teste verifica o funcionamento correto de unidades isoladas de código, como funções ou métodos, sendo rápido e fácil de automatizar?</p>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="a"> A) Testes de Sistema</label>
+                    <label><input type="radio" name="q1" value="b"> B) Testes de Integração</label>
+                    <label><input type="radio" name="q1" value="c"> C) Testes Unitários</label>
+                    <label><input type="radio" name="q1" value="d"> D) Testes de Usabilidade</label>
+                </div>
+                <button onclick="checkAnswer(1, 'c')">Verificar</button>
+                <div class="feedback" id="feedback1"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <h2>Questão 2</h2>
+        <div class="card-content">
+            <div class="hint-section">
+                <h3>Dica</h3>
+                <p>A "Pirâmide de Testes" é um modelo visual que orienta a quantidade e o tipo de teste a ser implementado. A base é a parte mais larga e com maior quantidade de testes.</p>
+            </div>
+            <div class="question-section">
+                <p>Na Pirâmide de Testes, qual tipo de teste forma a base, sendo o mais numeroso, rápido e barato de executar?</p>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="a"> A) Testes de UI/E2E</label>
+                    <label><input type="radio" name="q2" value="b"> B) Testes de Integração</label>
+                    <label><input type="radio" name="q2" value="c"> C) Testes Manuais</label>
+                    <label><input type="radio" name="q2" value="d"> D) Testes Unitários</label>
+                </div>
+                <button onclick="checkAnswer(2, 'd')">Verificar</button>
+                <div class="feedback" id="feedback2"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <h2>Questão 3</h2>
+        <div class="card-content">
+            <div class="hint-section">
+                <h3>Dica</h3>
+                <p>O conceito de "Shift Left" propõe uma mudança de mentalidade no ciclo de desenvolvimento. Pense em "deslocar para a esquerda" na linha do tempo do projeto.</p>
+            </div>
+            <div class="question-section">
+                <p>Analise as duas asserções a seguir:</p>
+                <p><b>I.</b> O custo para corrigir um bug em produção é significativamente maior do que corrigi-lo na fase de desenvolvimento ou requisitos.</p>
+                <p><b>II.</b> A abordagem "Shift Left Testing" propõe mover as atividades de teste para o final do ciclo de desenvolvimento.</p>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="a"> A) A asserção I é verdadeira, e a II é falsa.</label>
+                    <label><input type="radio" name="q3" value="b"> B) A asserção I é falsa, e a II é verdadeira.</label>
+                    <label><input type="radio" name="q3" value="c"> C) Ambas as asserções são verdadeiras.</label>
+                    <label><input type="radio" name="q3" value="d"> D) Ambas as asserções são falsas.</label>
+                </div>
+                <button onclick="checkAnswer(3, 'a')">Verificar</button>
+                <div class="feedback" id="feedback3"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-card">
+        <h2>Questão 4</h2>
+        <div class="card-content">
+            <div class="hint-section">
+                <h3>Dica</h3>
+                <p>Pense nos testes que são feitos "sem rodar o código". Revisões e inspeções de código se encaixam nessa categoria.</p>
+            </div>
+            <div class="question-section">
+                <p>Qual das seguintes opções é um tipo de teste estático?</p>
+                <div class="options">
+                    <label><input type="radio" name="q4" value="a"> A) Testes de Integração</label>
+                    <label><input type="radio" name="q4" value="b"> B) Testes Unitários</label>
+                    <label><input type="radio" name="q4" value="c"> C) Análise estática de código</label>
+                    <label><input type="radio" name="q4" value="d"> D) Testes de Desempenho</label>
+                </div>
+                <button onclick="checkAnswer(4, 'c')">Verificar</button>
+                <div class="feedback" id="feedback4"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <h2>Questão 5</h2>
+        <div class="card-content">
+            <div class="hint-section">
+                <h3>Dica</h3>
+                <p>A "qualidade em uso" e a "qualidade de produto" são conceitos chave em um padrão internacional que define características como usabilidade e segurança.</p>
+            </div>
+            <div class="question-section">
+                <p>O padrão de qualidade ISO/IEC 25010 define características de software. Qual característica se refere à capacidade de proteger informações e dados contra acessos não autorizados?</p>
+                <div class="options">
+                    <label><input type="radio" name="q5" value="a"> A) Usabilidade</label>
+                    <label><input type="radio" name="q5" value="b"> B) Portabilidade</label>
+                    <label><input type="radio" name="q5" value="c"> C) Segurança</label>
+                    <label><input type="radio" name="q5" value="d"> D) Manutenibilidade</label>
+                </div>
+                <button onclick="checkAnswer(5, 'c')">Verificar</button>
+                <div class="feedback" id="feedback5"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="question-card">
+        <h2>Questão 6</h2>
+        <div class="card-content">
+            <div class="hint-section">
+                <h3>Dica</h3>
+                <p>Pense no papel do profissional que conduz a reunião e garante que o processo de revisão seja seguido.</p>
+            </div>
+            <div class="question-section">
+                <p>Em um processo de revisão de software, qual participante é responsável por conduzir a reunião e garantir que todos tenham a oportunidade de contribuir?</p>
+                <div class="options">
+                    <label><input type="radio" name="q6" value="a"> A) O Autor</label>
+                    <label><input type="radio" name="q6" value="b"> B) O Registrador</label>
+                    <label><input type="radio" name="q6" value="c"> C) O Moderador</label>
+                    <label><input type="radio" name="q6" value="d"> D) O Revisor</label>
+                </div>
+                <button onclick="checkAnswer(6, 'c')">Verificar</button>
+                <div class="feedback" id="feedback6"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-card">
+        <h2>Questão 7</h2>
+        <div class="card-content">
+            <div class="hint-section">
+                <h3>Dica</h3>
+                <p>Esta abordagem busca um equilíbrio entre testes rápidos e baratos e testes lentos e caros. Ela é representada por uma figura geométrica.</p>
+            </div>
+            <div class="question-section">
+                <p>Qual modelo conceitual prioriza testes unitários (na base) e minimiza testes de UI/E2E (no topo) para maximizar a eficiência e a eficácia?</p>
+                <div class="options">
+                    <label><input type="radio" name="q7" value="a"> A) O Modelo de V</label>
+                    <label><input type="radio" name="q7" value="b"> B) O Ciclo de DevOps</label>
+                    <label><input type="radio" name="q7" value="c"> C) A Pirâmide de Testes</label>
+                    <label><input type="radio" name="q7" value="d"> D) O Modelo Cascata</label>
+                </div>
+                <button onclick="checkAnswer(7, 'c')">Verificar</button>
+                <div class="feedback" id="feedback7"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-card">
+        <h2>Questão 8</h2>
+        <div class="card-content">
+            <div class="hint-section">
+                <h3>Dica</h3>
+                <p>A automação é ideal para tarefas repetitivas. Pense em qual tipo de teste se encaixa bem nessa descrição, pois garante que novas alterações não quebrem o que já funcionava.</p>
+            </div>
+            <div class="question-section">
+                <p>Qual tipo de teste é essencial para garantir que novas funcionalidades não causem problemas em partes do sistema que já funcionavam corretamente?</p>
+                <div class="options">
+                    <label><input type="radio" name="q8" value="a"> A) Testes de Carga</label>
+                    <label><input type="radio" name="q8" value="b"> B) Testes de Regressão</label>
+                    <label><input type="radio" name="q8" value="c"> C) Testes de Aceitação</label>
+                    <label><input type="radio" name="q8" value="d"> D) Testes de Segurança</label>
+                </div>
+                <button onclick="checkAnswer(8, 'b')">Verificar</button>
+                <div class="feedback" id="feedback8"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-card">
+        <h2>Questão 9</h2>
+        <div class="card-content">
+            <div class="hint-section">
+                <h3>Dica</h3>
+                <p>Python possui um design intuitivo e é uma das linguagens mais populares. Pense nas vantagens que a tornam ideal para quem está começando.</p>
+            </div>
+            <div class="question-section">
+                <p>Segundo o material de revisão de Python, qual é um dos principais motivos para aprender a linguagem?</p>
+                <div class="options">
+                    <label><input type="radio" name="q9" value="a"> A) Sua sintaxe complexa e verbosa</label>
+                    <label><input type="radio" name="q9" value="b"> B) Seu uso limitado a áreas específicas</label>
+                    <label><input type="radio" name="q9" value="c"> C) Sua baixa popularidade global</label>
+                    <label><input type="radio" name="q9" value="d"> D) Sua sintaxe simples e intuitiva</label>
+                </div>
+                <button onclick="checkAnswer(9, 'd')">Verificar</button>
+                <div class="feedback" id="feedback9"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-card">
+        <h2>Questão 10</h2>
+        <div class="card-content">
+            <div class="hint-section">
+                <h3>Dica</h3>
+                <p>Qual é o tipo de dado em Python que armazena sequências de caracteres delimitadas por aspas?</p>
+            </div>
+            <div class="question-section">
+                <p>Qual tipo de dado é representado por `nome = "Maria"` e `frase = 'Python é incrível!'`?</p>
+                <div class="options">
+                    <label><input type="radio" name="q10" value="a"> A) float</label>
+                    <label><input type="radio" name="q10" value="b"> B) bool</label>
+                    <label><input type="radio" name="q10" value="c"> C) int</label>
+                    <label><input type="radio" name="q10" value="d"> D) str (String)</label>
+                </div>
+                <button onclick="checkAnswer(10, 'd')">Verificar</button>
+                <div class="feedback" id="feedback10"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-card">
+        <h2>Questão 11</h2>
+        <div class="card-content">
+            <div class="hint-section">
+                <h3>Dica</h3>
+                <p>Essas estruturas de dados são perfeitas para armazenar dados como `{"nome": "Ana", "idade": 22}`.</p>
+            </div>
+            <div class="question-section">
+                <p>Em Python, qual estrutura de dados é uma coleção de pares chave-valor?</p>
+                <div class="options">
+                    <label><input type="radio" name="q11" value="a"> A) Listas</label>
+                    <label><input type="radio" name="q11" value="b"> B) Dicionários</label>
+                    <label><input type="radio" name="q11" value="c"> C) Tuplas</label>
+                    <label><input type="radio" name="q11" value="d"> D) Conjuntos</label>
+                </div>
+                <button onclick="checkAnswer(11, 'b')">Verificar</button>
+                <div class="feedback" id="feedback11"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-card">
+        <h2>Questão 12</h2>
+        <div class="card-content">
+            <div class="hint-section">
+                <h3>Dica</h3>
+                <p>Pense nas principais diferenças entre loops `for` e `while`. Um deles é usado quando o número de repetições é conhecido antecipadamente.</p>
+            </div>
+            <div class="question-section">
+                <p>Analise as duas asserções a seguir:</p>
+                <p><b>I.</b> O loop `for` em Python é ideal para percorrer sequências como listas e ranges.</p>
+                <p><b>II.</b> O loop `while` é usado quando você sabe exatamente quantas vezes a iteração será necessária.</p>
+                <div class="options">
+                    <label><input type="radio" name="q12" value="a"> A) A asserção I é verdadeira, e a II é falsa.</label>
+                    <label><input type="radio" name="q12" value="b"> B) A asserção I é falsa, e a II é verdadeira.</label>
+                    <label><input type="radio" name="q12" value="c"> C) Ambas as asserções são verdadeiras.</label>
+                    <label><input type="radio" name="q12" value="d"> D) Ambas as asserções são falsas.</label>
+                </div>
+                <button onclick="checkAnswer(12, 'a')">Verificar</button>
+                <div class="feedback" id="feedback12"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="question-card">
+        <h2>Questão 13</h2>
+        <div class="card-content">
+            <div class="hint-section">
+                <h3>Dica</h3>
+                <p>Os operadores lógicos combinam expressões booleanas (`True` ou `False`). Pense na condição que exige que *todas* as sub-condições sejam verdadeiras.</p>
+            </div>
+            <div class="question-section">
+                <p>Qual operador lógico exige que ambas as condições sejam verdadeiras para que o resultado seja `True`?</p>
+                <div class="options">
+                    <label><input type="radio" name="q13" value="a"> A) `or`</label>
+                    <label><input type="radio" name="q13" value="b"> B) `not`</label>
+                    <label><input type="radio" name="q13" value="c"> C) `and`</label>
+                    <label><input type="radio" name="q13" value="d"> D) `==`</label>
+                </div>
+                <button onclick="checkAnswer(13, 'c')">Verificar</button>
+                <div class="feedback" id
